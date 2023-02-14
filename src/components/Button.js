@@ -1,5 +1,14 @@
-function Button (props) {
-    return <button onClick={props?.click}>{props?.text}</button>
+import '../styles/Button.css'
+
+function Button({
+    action,
+    text,
+    className=''
+}) {
+    return (
+        <button className={className} onClick={action}>{text}</button>
+    )
 }
 
+ 
 export default Button;
