@@ -1,7 +1,9 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import Button from "./components/Button";
-import MostrarTempo from "./components/MostrarTempo";
-import MostrarVoltas from "./components/MostrarVoltas";
+import MostraTempo from "./components/MostraTempo";
+import MostraVoltas from "./components/MostraVoltas";
+
+import './styles/App.css'
 
 function App() {
   const [numVoltas, setNumVoltas] = useState(0)
@@ -10,7 +12,7 @@ function App() {
 
   useEffect(() => {
     let timer = null
-    if(running) {
+    if (running) {
       timer = setInterval(() => {
         setTempo(old => old + 1)
       }, 1000)
@@ -21,32 +23,41 @@ function App() {
         clearInterval(timer)
       }
     }
+
   }, [running])
 
-  const toggleRunning = () => { 
-    setRunning(!running);
+  const toggleRunning = () => [
+    setRunning(!running)
+  ]
+
+  const incrementVoltas = () => {
+    setNumVoltas(numVoltas + 1)
   }
 
-  const increment = () => {
-    setNumVoltas(numVoltas + 1); 
-  }
-
-  const decrement = () => {
+  const decrementVoltas = () => {
     if(numVoltas === 0){
       return
     }
-
-    setNumVoltas(numVoltas - 1);
+    setNumVoltas(numVoltas - 1)
   }
- 
+
+  const reset = () => {
+    setNumVoltas(0)
+    setTempo(0)
+  }
+
   return (
     <div className="App">
-      <MostrarVoltas voltas={numVoltas} />
-      <Button text="+" click={increment}/>
-      <Button text="-" click={decrement}/>
-      <MostrarTempo tempo={tempo} />
-      <Button text="Iniciar" click={toggleRunning} />
-      <Button text="Reiniciar"/>
+      <MostraVoltas voltas={numVoltas} />
+      <br />
+      <Button text='+' className="bigger" action={incrementVoltas} />
+      <Button text='-' className="bigger" action={decrementVoltas} />
+      {
+        numVoltas > 0 && <MostraTempo tempo={Math.round(tempo / numVoltas)} />
+      }
+      <br />
+      <Button text={running? 'Pausar' : 'Iniciar'} action={toggleRunning} />
+      <Button text='Reiniciar' action={reset} />
     </div>
   );
 }
